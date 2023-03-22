@@ -858,11 +858,11 @@ viewUser(){
 }
 debian_apt(){
 	apt-get update
-	apt-get install -y python-pip python-m2crypto curl unzip vim git gcc build-essential make
+	apt-get install -y python3-pip python3-m2crypto curl unzip vim git gcc build-essential make
 }
 centos_yum(){
 	yum update
-	yum install -y python-pip python-m2crypto curl unzip vim git gcc make
+	yum install -y python3-pip python3-m2crypto curl unzip vim git gcc make
 }
 JQ_install(){
 	JQ_ver=`jq -V`
@@ -885,32 +885,32 @@ rc.local_ss_set(){
 	if [[ ${release} = "centos" ]]; then
 		chmod +x /etc/rc.d/rc.local
 		#sed -i '/cd \/etc\/shadowsocksr\/shadowsocks\//d' /etc/rc.d/rc.local
-		#sed -i '/nohup python server.py a >> ssserver.log 2>&1 &/d' /etc/rc.d/rc.local
+		#sed -i '/nohup python3 server.py a >> ssserver.log 2>&1 &/d' /etc/rc.d/rc.local
 		sed -i '/shadowsocksr/d' /etc/rc.d/rc.local
-		sed -i '/python server.py/d' /etc/rc.d/rc.local
-		echo -e "cd ${ssr_ss_file} && nohup python server.py a >> ssserver.log 2>&1 &" >> /etc/rc.d/rc.local
+		sed -i '/python3 server.py/d' /etc/rc.d/rc.local
+		echo -e "cd ${ssr_ss_file} && nohup python3 server.py a >> ssserver.log 2>&1 &" >> /etc/rc.d/rc.local
 	else
 		chmod +x /etc/rc.local
 		sed -i '$d' /etc/rc.local
 		#sed -i '/cd \/etc\/shadowsocksr\/shadowsocks\//d' /etc/rc.local
-		#sed -i '/nohup python server.py a >> ssserver.log 2>&1 &/d' /etc/rc.local
+		#sed -i '/nohup python3 server.py a >> ssserver.log 2>&1 &/d' /etc/rc.local
 		sed -i '/shadowsocksr/d' /etc/rc.local
-		sed -i '/python server.py/d' /etc/rc.local
-		echo -e "cd ${ssr_ss_file} && nohup python server.py a >> ssserver.log 2>&1 &" >> /etc/rc.local
+		sed -i '/python3 server.py/d' /etc/rc.local
+		echo -e "cd ${ssr_ss_file} && nohup python3 server.py a >> ssserver.log 2>&1 &" >> /etc/rc.local
 		echo -e "exit 0" >> /etc/rc.local
 	fi
 }
 rc.local_ss_del(){
 	if [[ ${release} = "centos" ]]; then
 		#sed -i '/cd \/etc\/shadowsocksr\/shadowsocks\//d' /etc/rc.d/rc.local
-		#sed -i '/nohup python server.py a >> ssserver.log 2>&1 &/d' /etc/rc.d/rc.local
+		#sed -i '/nohup python3 server.py a >> ssserver.log 2>&1 &/d' /etc/rc.d/rc.local
 		sed -i '/shadowsocksr/d' /etc/rc.d/rc.local
-		sed -i '/python server.py/d' /etc/rc.d/rc.local
+		sed -i '/python3 server.py/d' /etc/rc.d/rc.local
 	else
 		#sed -i '/cd \/etc\/shadowsocksr\/shadowsocks\//d' /etc/rc.local
-		#sed -i '/nohup python server.py a >> ssserver.log 2>&1 &/d' /etc/rc.local
+		#sed -i '/nohup python3 server.py a >> ssserver.log 2>&1 &/d' /etc/rc.local
 		sed -i '/shadowsocksr/d' /etc/rc.local
-		sed -i '/python server.py/d' /etc/rc.local
+		sed -i '/python3 server.py/d' /etc/rc.local
 	fi
 }
 rc.local_serverspeed_set(){
@@ -1018,7 +1018,7 @@ EOF
 	rc.local_ss_set
 	#启动SSR服务端，并判断是否启动成功
 	cd ${ssr_ss_file}
-	nohup python server.py a >> ssserver.log 2>&1 &
+	nohup python3 server.py a >> ssserver.log 2>&1 &
 	sleep 2s
 	PID=`ps -ef |grep -v grep | grep server.py |awk '{print $2}'`
 	if [[ ! -z "${PID}" ]]; then
@@ -1354,23 +1354,23 @@ debian_View_user_connection_info(){
 	now_mode=`jq '.port_password' ${config_user_file}`
 	if [[ "${now_mode}" = "null" ]]; then
 		now_mode="${Word_single_port}" && user_total="1"
-		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
+		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
 		user_port=`jq '.server_port' ${config_user_file}`
-		user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
-		user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
+		user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
+		user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
 		user_list_all="1. ${Word_port}: ${Green_font_prefix}"${user_port}"${Font_color_suffix}, ${Prompt_total_number_of_ip_number} ${Green_font_prefix}"${user_IP_total}"${Font_color_suffix}, ${Prompt_the_currently_connected_ip} ${Green_font_prefix}"${user_IP}"${Font_color_suffix}\n"
 		echo -e "${Word_current_mode} ${Green_font_prefix} "${now_mode}" ${Font_color_suffix} 。"
 		echo -e ${user_list_all}
 	else
 		now_mode="${Word_multi_port}" && user_total=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | wc -l`
-		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
+		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
 		user_list_all=""
 		user_id=0
 		for((integer = ${user_total}; integer >= 1; integer--))
 		do
 			user_port=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | awk -F ":" '{print $1}' | sed -n "${integer}p" | perl -e 'while($_=<>){ /\"(.*)\"/; print $1;}'`
-			user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
-			user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
+			user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
+			user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |grep "${user_port}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |wc -l`
 			user_id=$[$user_id+1]
 			user_list_all=${user_list_all}${user_id}". ${Word_port}: ${Green_font_prefix}"${user_port}"${Font_color_suffix}, ${Prompt_total_number_of_ip_number} ${Green_font_prefix}"${user_IP_total}"${Font_color_suffix}, ${Prompt_the_currently_connected_ip} ${Green_font_prefix}"${user_IP}"${Font_color_suffix}\n"
 		done
@@ -1382,23 +1382,23 @@ centos_View_user_connection_info(){
 	now_mode=`jq '.port_password' ${config_user_file}`
 	if [[ "${now_mode}" = "null" ]]; then
 		now_mode="${Word_single_port}" && user_total="1"
-		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |sort -u |wc -l`
+		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |sort -u |wc -l`
 		user_port=`jq '.server_port' ${config_user_file}`
-		user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
-		user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |wc -l`
+		user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
+		user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |wc -l`
 		user_list_all="1. ${Word_port}: ${Green_font_prefix}"${user_port}"${Font_color_suffix}, ${Prompt_total_number_of_ip_number} ${Green_font_prefix}"${user_IP_total}"${Font_color_suffix}, ${Prompt_the_currently_connected_ip} ${Green_font_prefix}"${user_IP}"${Font_color_suffix}\n"
 		echo -e "${Word_current_mode} ${Green_font_prefix} "${now_mode}" ${Font_color_suffix} 。"
 		echo -e ${user_list_all}
 	else
 		now_mode="${Word_multi_port}" && user_total=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | wc -l`
-		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |sort -u |wc -l`
+		IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |sort -u |wc -l`
 		user_list_all=""
 		user_id=0
 		for((integer = 1; integer <= ${user_total}; integer++))
 		do
 			user_port=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | awk -F ":" '{print $1}' | sed -n "${integer}p" | perl -e 'while($_=<>){ /\"(.*)\"/; print $1;}'`
-			user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
-			user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |wc -l`
+			user_IP=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
+			user_IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' |grep "${user_port}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |wc -l`
 			user_id=$[$user_id+1]
 			user_list_all=${user_list_all}${user_id}". ${Word_port}: ${Green_font_prefix}"${user_port}"${Font_color_suffix}, ${Prompt_total_number_of_ip_number} ${Green_font_prefix}"${user_IP_total}"${Font_color_suffix}, ${Prompt_the_currently_connected_ip} ${Green_font_prefix}"${user_IP}"${Font_color_suffix}\n"
 		done
@@ -1408,7 +1408,7 @@ centos_View_user_connection_info(){
 }
 SSR_start(){
 	cd ${ssr_ss_file}
-	nohup python server.py a > ssserver.log 2>&1 &
+	nohup python3 server.py a > ssserver.log 2>&1 &
 	sleep 2s
 	PID=`ps -ef |grep -v grep | grep server.py |awk '{print $2}'`
 	if [[ ! -z "${PID}" ]]; then
@@ -1599,7 +1599,7 @@ config_user_file="/etc/shadowsocksr/user-config.json"
 PID=`ps -ef |grep -v grep | grep server.py |awk '{print $2}'`
 [ ! -z "${PID}" ] && kill -9 ${PID}
 cd ${server_ss_file}
-nohup python server.py a >> ssserver.log 2>&1 &
+nohup python3 server.py a >> ssserver.log 2>&1 &
 sleep 2s
 PID=`ps -ef |grep -v grep | grep server.py |awk '{print $2}'`
 if [ ! -z "${PID}" ]; then

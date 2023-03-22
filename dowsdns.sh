@@ -47,7 +47,7 @@ check_installed_status(){
 	[[ ! -e ${file} ]] && echo -e "${Error} dowsDNS 没有安装，请检查 !" && exit 1
 }
 check_pid(){
-	PID=`ps -ef| grep "python start.py"| grep -v grep| grep -v ".sh"| grep -v "init.d"| grep -v "service"| awk '{print $2}'`
+	PID=`ps -ef| grep "python3 start.py"| grep -v grep| grep -v ".sh"| grep -v "init.d"| grep -v "service"| awk '{print $2}'`
 }
 Download_dowsdns(){
 	cd "/usr/local"
@@ -79,20 +79,20 @@ Service_dowsdns(){
 	echo -e "${Info} dowsDNS 服务管理脚本下载完成 !"
 }
 Installation_dependency(){
-	python_status=$(python --help)
+	python_status=$(python3 --help)
 	if [[ ${release} == "centos" ]]; then
 		yum update
 		if [[ -z ${python_status} ]]; then
-			yum install -y python python-pip unzip
+			yum install -y python3 python3-pip unzip
 		else
-			yum install -y python-pip unzip
+			yum install -y python3-pip unzip
 		fi
 	else
 		apt-get update
 		if [[ -z ${python_status} ]]; then
-			apt-get install -y python python-pip unzip
+			apt-get install -y python3 python3-pip unzip
 		else
-			apt-get install -y python-pip unzip
+			apt-get install -y python3-pip unzip
 		fi
 	fi
 	pip install requests
@@ -475,7 +475,7 @@ Update_dowsdns(){
 	check_installed_status
 	check_sys
 	cd ${file}
-	python update.py
+	python3 update.py
 }
 Uninstall_dowsdns(){
 	check_installed_status

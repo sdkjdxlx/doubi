@@ -16,7 +16,7 @@ check_ssr(){
 }
 scan_port(){
 	cd "${SSR_file}"
-	port_all=$(python "mujson_mgr.py" -l)
+	port_all=$(python3 "mujson_mgr.py" -l)
 	[[ -z ${port_all} ]] && echo -e "${Error} 没有发现任何端口(用户) !" && exit 1
 	port_num=$(echo "${port_all}"|wc -l)
 	[[ ${port_num} = 0 ]] && echo -e "${Error} 没有发现任何端口(用户) !" && exit 1
@@ -26,7 +26,7 @@ clear_traffic(){
 	do
 		port=$(echo -e "${port_all}"|sed -n "${integer}p"|awk '{print $NF}')
 		[[ -z ${port} ]] && echo -e "${Error} 获取的端口(用户)为空 !" && exit 1
-		result=$(python "mujson_mgr.py" -c -p "${port}")
+		result=$(python3 "mujson_mgr.py" -c -p "${port}")
 		echo -e "${Info} 端口[${port}] 流量已清零 !"
 	done
 	echo -e "${Info} 所有端口(用户)流量已清零 !"

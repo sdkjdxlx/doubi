@@ -42,25 +42,25 @@ check_pid(){
 	[[ -z ${PID} ]] && echo -e "${Error} ShadowsocksR服务端没有运行，请检查 !" && exit 1
 }
 scan_port_centos(){
-	port=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |awk -F ":" '{print $NF}' |sort -u`
+	port=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' | grep '::ffff:' |awk '{print $4}' |awk -F ":" '{print $NF}' |sort -u`
 	port_num=`echo "${port}" |wc -l`
 	[[ -z ${port} ]] && echo -e "${Error} 没有发现正在链接的端口 !" && exit 1
 	[[ ${port_num} = 0 ]] && echo -e "${Error} 没有发现正在链接的端口 !" && exit 1
 }
 scan_port_debian(){
-	port=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |awk '{print $4}' |awk -F ":" '{print $NF}' |sort -u`
+	port=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |awk '{print $4}' |awk -F ":" '{print $NF}' |sort -u`
 	port_num=`echo "${port}" |wc -l`
 	[[ -z ${port} ]] && echo -e "${Error} 没有发现正在链接的端口 !" && exit 1
 	[[ ${port_num} = 0 ]] && echo -e "${Error} 没有发现正在链接的端口 !" && exit 1
 }
 scan_ip_centos(){
-	ip=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
+	ip=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
 	ip_num=`echo "${ip}" |wc -l`
 	[[ -z ${ip} ]] && echo -e "${Error} 没有发现正在链接的IP !" && exit 1
 	[[ ${ip_num} = 0 ]] && echo -e "${Error} 没有发现正在链接的IP !" && exit 1
 }
 scan_ip_debian(){
-	ip=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
+	ip=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
 	ip_num=`echo "${ip}" |wc -l`
 	[[ -z ${ip} ]] && echo -e "${Error} 没有发现正在链接的IP !" && exit 1
 	[[ ${ip_num} = 0 ]] && echo -e "${Error} 没有发现正在链接的IP !" && exit 1
@@ -69,7 +69,7 @@ check_threshold_centos(){
 	for((integer = ${port_num}; integer >= 1; integer--))
 	do
 		port_check=`echo "${port}" |sed -n "$integer"p`
-		ip_check_1=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp' |grep "${port_check}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
+		ip_check_1=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp' |grep "${port_check}" | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u`
 		ip_num=`echo "${ip_check_1}" |wc -l`
 		if [[ ${action_2} == "y" ]]; then
 			get_IP_address
@@ -85,7 +85,7 @@ check_threshold_debian(){
 	for((integer = ${port_num}; integer >= 1; integer--))
 	do
 		port_check=`echo "${port}" |sed -n "$integer"p`
-		ip_check_1=`netstat -anp |grep 'ESTABLISHED' |grep 'python' |grep 'tcp6' |grep "${port_check}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
+		ip_check_1=`netstat -anp |grep 'ESTABLISHED' |grep 'python3' |grep 'tcp6' |grep "${port_check}" |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u`
 		ip_num=`echo "${ip_check_1}" |wc -l`
 		if [[ ${action_2} == "y" ]]; then
 			get_IP_address

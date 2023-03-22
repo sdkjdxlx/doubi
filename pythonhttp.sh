@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #       System Required: All
-#       Description: Python HTTP Server
+#       Description: python3 HTTP Server
 #       Version: 1.0.2
 #       Author: Toyo
 #       Blog: https://doub.io/wlzy-8/
@@ -64,7 +64,7 @@ starthttp(){
 	sethttp
 	iptables_add
 	cd ${httpfile}
-	nohup python -m SimpleHTTPServer $httpport >> httpserver.log 2>&1 &
+	nohup python3 -m SimpleHTTPServer $httpport >> httpserver.log 2>&1 &
 	sleep 2s
 	PID=`ps -ef | grep SimpleHTTPServer | grep -v grep | awk '{print $2}'`
 	if [[ -z $PID ]]; then
